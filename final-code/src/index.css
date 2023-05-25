@@ -1,0 +1,16 @@
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  background-color: lightgrey;
+  font-family: helvetica, arial, sans-serif;
+  margin: 0px;
+}
