@@ -1,12 +1,12 @@
-import { FC, ReactNode } from "react";
+import { ReactNode, FC } from "react";
 import styled from "styled-components";
 
-interface Props {
+interface PreCodeProps {
   children?: ReactNode;
   className?: string;
   centered?: boolean;
 }
-const PreCode: FC<Props> = ({ children, className, centered }) => {
+const PreCode: FC<PreCodeProps> = ({ children, className, centered }) => {
   return (
     <Pre className={className} centered={centered}>
       <code>{children}</code>
@@ -24,5 +24,4 @@ const Pre = styled.pre<{ centered?: boolean }>`
   padding: 14px;
   width: 450px;
 `;
-
 export default PreCode;

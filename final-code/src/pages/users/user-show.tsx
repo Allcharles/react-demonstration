@@ -1,5 +1,4 @@
 import { FC } from "react";
-import styled from "styled-components";
 import { H3 } from "../../components/common/heading";
 import PreCode from "../../components/common/pre-code";
 import User from "../../models/user";
@@ -11,12 +10,9 @@ const UserShow: FC<Props> = ({ user }: Props) => {
   return (
     <>
       <H3>{user.name}</H3>
-      <CenteredPreCode>{JSON.stringify(user, null, 2)}</CenteredPreCode>
+      <PreCode centered>{JSON.stringify(user, null, 2)}</PreCode>
     </>
   );
 };
 
-const CenteredPreCode = styled(PreCode)`
-  margin: 1rem auto;
-`;
 export default UserShow;

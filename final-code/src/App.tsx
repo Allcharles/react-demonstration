@@ -1,19 +1,24 @@
-import { FC } from "react";
+import { Component, FC } from "react";
 import "./app.css";
 import Header from "./components/header/header";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { UserService } from "./context/user";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 const App: FC = () => {
   return (
-    <UserService>
-      <Header />
+    <QueryClientProvider client={queryClient}>
+      <UserService>
+        <Header />
 
-      <Wrapper>
-        <Outlet />
-      </Wrapper>
-    </UserService>
+        <Wrapper>
+          <Outlet />
+        </Wrapper>
+      </UserService>
+    </QueryClientProvider>
   );
 };
 

@@ -1,14 +1,13 @@
-import { AxiosResponse } from "axios";
 import { FC, ReactNode, createContext, useContext } from "react";
 import User from "../models/user";
 import axiosClient from "../modules/axios-client";
 
 interface IUserService {
-  list(): Promise<AxiosResponse<User[]>>;
-  show(id: number): Promise<AxiosResponse<User>>;
-  create(user: Exclude<User, "id">): Promise<AxiosResponse<User>>;
-  update(user: Partial<User> & Pick<User, "id">): Promise<AxiosResponse<User>>;
-  delete(id: number): Promise<AxiosResponse<User>>;
+  list(): Promise<User[]>;
+  show(id: number): Promise<User>;
+  create(user: Exclude<User, "id">): Promise<User>;
+  update(user: Partial<User> & Pick<User, "id">): Promise<User>;
+  delete(id: number): Promise<void>;
 }
 
 const UserServiceContext = createContext<IUserService | undefined>(undefined);
@@ -18,11 +17,12 @@ export const UserService: FC<Props> = ({ children }) => {
   const route = "/users";
   const showRoute = (id: number) => `${route}/${id}`;
   const userService: IUserService = {
-    list: async () => axiosClient.get(route),
-    show: async (id) => axiosClient.get(showRoute(id)),
-    create: async (user) => axiosClient.post(route, user),
-    update: async (user) => axiosClient.put(showRoute(user.id), user),
-    delete: async (id) => axiosClient.delete(showRoute(id)),
+    list: async () => (await axiosClient.get<User[]>(route)).data,
+    show: async (id) => (await axiosClient.get<User>(showRoute(id))).data,
+    create: async (user) => (await axiosClient.post<User>(route, user)).data,
+    update: async (user) =>
+      (await axiosClient.put<User>(showRoute(user.id), user)).data,
+    delete: async (id) => (await axiosClient.delete<void>(showRoute(id))).data,
   };
 
   return (

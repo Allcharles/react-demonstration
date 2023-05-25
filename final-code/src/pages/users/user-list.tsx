@@ -1,5 +1,7 @@
-import { FC, useEffect, useState } from "react";
-import styled from "styled-components";
+import { FC, useState } from "react";
+import { useQuery } from "react-query";
+import { Button, ButtonLink } from "../../components/common/button";
+import ErrorHandler from "../../components/common/error-handler";
 import { H2 } from "../../components/common/heading";
 import useUserService from "../../context/user";
 import User from "../../models/user";
@@ -7,47 +9,33 @@ import UserShow from "./user-show";
 
 const UserList: FC = () => {
   const userService = useUserService();
-  const [users, setUsers] = useState<User[] | null>(null);
+  const query = useQuery("Users", userService.list);
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const response = await userService.list();
-      setUsers(response.data);
-    };
-    getUsers();
-  }, [userService]);
+  if (query.isError)
+    return <ErrorHandler dump={JSON.stringify(query.error, undefined, 2)} />;
 
-  if (!users) return <h1>Loading...</h1>;
+  if (query.isSuccess)
+    return (
+      <>
+        <H2>User List</H2>
+        <ul>
+          {query.data.map((user) => (
+            <li key={user.id}>
+              <ButtonLink type="button" onClick={() => setUser(user)}>
+                {user.name}
+              </ButtonLink>
+            </li>
+          ))}
+        </ul>
 
-  return (
-    <>
-      <H2>User List</H2>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <Button type="button" onClick={() => setUser(user)}>
-              {user.name}
-            </Button>
-          </li>
-        ))}
-      </ul>
+        <Button btnType="info">Testing</Button>
 
-      {user && <UserShow user={user} />}
-    </>
-  );
+        {user && <UserShow user={user} />}
+      </>
+    );
+
+  return <h1>Loading...</h1>;
 };
-
-const Button = styled.button`
-  background-color: transparent;
-  border: 0;
-  color: #007bff;
-  cursor: pointer;
-
-  &:hover {
-    color: #0056b3;
-    text-decoration: underline;
-  }
-`;
 
 export default UserList;
