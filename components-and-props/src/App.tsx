@@ -1,9 +1,11 @@
 import { FC } from "react";
 
 const App: FC = () => {
+  const name = "Charles";
+
   return (
     <div>
-      <Welcome name="Charles" />
+      <Welcome name={name} />
     </div>
   );
 };

@@ -1,20 +1,10 @@
-# Example React app
+# Axios
 
-## Assumptions
-
-It is expected that you have the following software installed and functional on your machine before proceeding:
-
-- Node.js: https://nodejs.org/en/download
+This is a basic example of how to use axios in a React application. View app.tsx for the example code.
 
 ## Setup
 
 ```shell
 npm install
-npm start
-```
-
-## Running the website
-
-```shell
 npm start
 ```
